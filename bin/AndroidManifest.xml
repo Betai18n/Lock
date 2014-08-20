@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lock"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.01" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -12,6 +12,7 @@
    
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="USES_POLICY_RESET_PASSWORD" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -27,10 +28,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- 设备管理 -->
-        <!--其中，permission表示此功能所需的权限；
-        android:name="android.app.device_admin"表示这个动作的跳转界面
-        -->
+
+        <receiver android:name=".BootReceiver" android:label="@string/app_name">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		        <category android:name="android.intent.category.LAUNCHER" />
+		    </intent-filter>
+		</receiver>
+
         <receiver
             android:name=".AdminReceiver"
             android:description="@string/app_name"
@@ -44,6 +49,7 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+        <service android:name="com.example.lock.LockStatusService"></service>
     </application>
 
 </manifest>

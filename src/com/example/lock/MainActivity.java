@@ -1,58 +1,57 @@
 package com.example.lock;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 import android.R.anim;
+import android.R.integer;
 import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 public class MainActivity extends Activity {
-private DevicePolicyManager policyManager;
-private static String newpassword = "3214";
-private ComponentName componentName;
+		
+		
+	//private DevicePolicyManager policyManager;
+	private static String newpassword = "3214";
+	private char[] nowtime = new char[100];
+	private String passtime;
+	//private String passtimestring;
 
+
+	
+	//private ComponentName componentName;
+
+
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        policyManager=(DevicePolicyManager) this.getSystemService(this.DEVICE_POLICY_SERVICE);
-        componentName=new ComponentName(this, AdminReceiver.class);
+        Intent intent2=new Intent(this, LockStatusService.class);
+        startService(intent2);
         
-        if (!policyManager.isAdminActive(componentName)) { 
-
-            Intent intent = new Intent( 
-
-            DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN); 
-
-            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName); 
-
-            startActivity(intent); 
-
-        } 
-
-        activeManage();
+        //policyManager=(DevicePolicyManager) this.getSystemService(this.DEVICE_POLICY_SERVICE);
+        //componentName=new ComponentName(this, AdminReceiver.class);
         
-        //policyManager.resetPassword("123", 0);
-        
-        //Intent intent1 = new Intent(DevicePolicyManager.ACTION_SET_NEW_PASSWORD);
-        //startActivity(intent1); 
-        
-        policyManager.resetPassword(newpassword,0);
-        
-        mylock();
-        
-        android.os.Process.killProcess(android.os.Process.myPid());
+        //mylock();
         
     }
     
+    /*
     private void mylock(){
         boolean active=policyManager.isAdminActive(componentName);
         if(!active){
@@ -64,14 +63,8 @@ private ComponentName componentName;
         }
     }
     
-
+*/
     
-    private void activeManage(){
-        Intent intent=new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "--∆‰À˚√Ë ˆ--");
-        startActivityForResult(intent, 0);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
