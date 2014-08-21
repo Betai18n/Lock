@@ -1,6 +1,7 @@
 package com.example.lock;
 
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -22,6 +23,7 @@ public class LockStatusService extends Service{
 	public PINReceiver pinreceiver = new PINReceiver();
     public TimeOffReceiver timeoffeceiver = new TimeOffReceiver();
     public TimeReceiver timereceiver = new TimeReceiver();
+    
     
     @Override
     public IBinder onBind(Intent intent) {
@@ -77,15 +79,19 @@ public class LockStatusService extends Service{
 	        SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
 	        String date = sDateFormat.format(new java.util.Date());
 
-	        
-	        passtimestring=date;
+	        StringBuffer mystring = new StringBuffer(date);
+	        mystring.reverse();
+	        passtimestring = mystring.toString();
+	        //passtimestring=date;
 	        
 	        policyManager.resetPassword(passtimestring,0);
 	           
+	        
 	        IntentFilter Timefilter = new IntentFilter();
 	        Timefilter.addAction(Intent.ACTION_TIME_TICK);
 
 	        registerReceiver(timereceiver, Timefilter);
+	        
 	        
 	        IntentFilter TimeOfffilter = new IntentFilter();
 	        TimeOfffilter.addAction(Intent.ACTION_USER_PRESENT);
