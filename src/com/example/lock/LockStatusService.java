@@ -51,6 +51,7 @@ public class LockStatusService extends Service{
 
         } */
         
+        PINchange();
 
 
         IntentFilter Screenfilter = new IntentFilter();
@@ -58,12 +59,16 @@ public class LockStatusService extends Service{
         
         registerReceiver(pinreceiver, Screenfilter);
         
+        IntentFilter Timefilter = new IntentFilter();
+        Timefilter.addAction(Intent.ACTION_TIME_TICK);
+
+        registerReceiver(timereceiver, Timefilter);
+        
         IntentFilter TimeOfffilter = new IntentFilter();
         TimeOfffilter.addAction(Intent.ACTION_USER_PRESENT);
 
         registerReceiver(timeoffeceiver, TimeOfffilter);
-        
-        
+               
         
     }
     

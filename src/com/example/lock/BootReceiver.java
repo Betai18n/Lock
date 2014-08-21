@@ -1,12 +1,19 @@
 package com.example.lock;
 
+import java.text.SimpleDateFormat;
+
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 
 
 public class BootReceiver extends BroadcastReceiver {
+	
+	
     public void onReceive(Context context, Intent intent) {
 
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
@@ -31,7 +38,6 @@ public class BootReceiver extends BroadcastReceiver {
             /* if you want to start a service, follow below method */
             //context.startActivity(newIntent);
             context.startService(newIntent);
-            
             
 
         }
