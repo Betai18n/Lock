@@ -19,7 +19,10 @@ public class LockStatusService extends Service{
 	public String passtimestring;
 	public ComponentName componentName;
 	
-	
+	public PINReceiver pinreceiver = new PINReceiver();
+    public TimeOffReceiver timeoffeceiver = new TimeOffReceiver();
+    public TimeReceiver timereceiver = new TimeReceiver();
+    
     @Override
     public IBinder onBind(Intent intent) {
         // TODO Auto-generated method stub
@@ -34,7 +37,7 @@ public class LockStatusService extends Service{
         policyManager=(DevicePolicyManager) this.getSystemService(this.DEVICE_POLICY_SERVICE);
         componentName=new ComponentName(this, AdminReceiver.class);
         
-        if (!policyManager.isAdminActive(componentName)) { 
+        /*if (!policyManager.isAdminActive(componentName)) { 
 
             Intent intent = new Intent( 
 
@@ -44,15 +47,16 @@ public class LockStatusService extends Service{
 
             startActivity(intent); 
 
-        } 
+        } */
         
 
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        registerReceiver(new PINReceiver(), filter);
+        IntentFilter Screenfilter = new IntentFilter();
+        Screenfilter.addAction(Intent.ACTION_SCREEN_ON);
         
-
+        registerReceiver(pinreceiver, Screenfilter);
+        
+        
         
     }
     
@@ -70,10 +74,39 @@ public class LockStatusService extends Service{
 			// TODO Auto-generated method stub
 			activeManage();
 	        
-;
 	        SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
 	        String date = sDateFormat.format(new java.util.Date());
 
+	        
+	        passtimestring=date;
+	        
+	        policyManager.resetPassword(passtimestring,0);
+	           
+	        IntentFilter Timefilter = new IntentFilter();
+	        Timefilter.addAction(Intent.ACTION_TIME_TICK);
+
+	        registerReceiver(timereceiver, Timefilter);
+	        
+	        IntentFilter TimeOfffilter = new IntentFilter();
+	        TimeOfffilter.addAction(Intent.ACTION_USER_PRESENT);
+
+	        registerReceiver(timeoffeceiver, TimeOfffilter);
+	        
+	        //android.os.Process.killProcess(android.os.Process.myPid());
+		}
+	}
+	
+	public class TimeReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			activeManage();
+	        
+	        SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
+	        String date = sDateFormat.format(new java.util.Date());
+
+	        
 	        passtimestring=date;
 	        
 	        policyManager.resetPassword(passtimestring,0);
@@ -82,7 +115,18 @@ public class LockStatusService extends Service{
 		}
 	}
 	
+	public class TimeOffReceiver extends BroadcastReceiver{
 
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			activeManage();
+	        
+			unregisterReceiver(timereceiver);
+			unregisterReceiver(timeoffeceiver);
+		}
+	}
+	
 
     @Override
     public void onDestroy() {

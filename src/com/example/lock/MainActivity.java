@@ -25,9 +25,6 @@ public class MainActivity extends Activity {
 		
 		
 	//private DevicePolicyManager policyManager;
-	private static String newpassword = "3214";
-	private char[] nowtime = new char[100];
-	private String passtime;
 	//private String passtimestring;
 
 
@@ -41,8 +38,29 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        Intent intent2=new Intent(this, LockStatusService.class);
-        startService(intent2);
+        DevicePolicyManager policyStart = (DevicePolicyManager) this.getSystemService(this.DEVICE_POLICY_SERVICE);
+        ComponentName componentStartName = new ComponentName(this, AdminReceiver.class);
+        
+        if (!policyStart.isAdminActive(componentStartName)) { 
+
+            Intent intent1 = new Intent( 
+
+            DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN); 
+
+            intent1.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentStartName); 
+
+            startActivity(intent1); 
+
+        } 
+        
+        try {
+			Intent intent2=new Intent(this, LockStatusService.class);
+			startService(intent2);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
         
         //policyManager=(DevicePolicyManager) this.getSystemService(this.DEVICE_POLICY_SERVICE);
         //componentName=new ComponentName(this, AdminReceiver.class);
