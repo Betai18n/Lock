@@ -58,6 +58,11 @@ public class LockStatusService extends Service{
         
         registerReceiver(pinreceiver, Screenfilter);
         
+        IntentFilter TimeOfffilter = new IntentFilter();
+        TimeOfffilter.addAction(Intent.ACTION_USER_PRESENT);
+
+        registerReceiver(timeoffeceiver, TimeOfffilter);
+        
         
         
     }
@@ -69,6 +74,20 @@ public class LockStatusService extends Service{
         //startActivityForResult(intent, 0);
     }
     
+    public void PINchange(){
+    	
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
+        String date = sDateFormat.format(new java.util.Date());
+
+        StringBuffer mystring = new StringBuffer(date);
+        mystring.reverse();
+        passtimestring = mystring.toString();
+        //passtimestring=date;
+        
+        policyManager.resetPassword(passtimestring,0);
+    	
+    }
+    
 	public class PINReceiver extends BroadcastReceiver{
 
 		@Override
@@ -76,16 +95,8 @@ public class LockStatusService extends Service{
 			// TODO Auto-generated method stub
 			activeManage();
 	        
-	        SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
-	        String date = sDateFormat.format(new java.util.Date());
 
-	        StringBuffer mystring = new StringBuffer(date);
-	        mystring.reverse();
-	        passtimestring = mystring.toString();
-	        //passtimestring=date;
-	        
-	        policyManager.resetPassword(passtimestring,0);
-	           
+			PINchange();
 	        
 	        IntentFilter Timefilter = new IntentFilter();
 	        Timefilter.addAction(Intent.ACTION_TIME_TICK);
@@ -109,14 +120,16 @@ public class LockStatusService extends Service{
 			// TODO Auto-generated method stub
 			activeManage();
 	        
+			PINchange();
+			/*
 	        SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
 	        String date = sDateFormat.format(new java.util.Date());
 
-	        
 	        passtimestring=date;
 	        
 	        policyManager.resetPassword(passtimestring,0);
-	           
+	        
+	           */
 	        //android.os.Process.killProcess(android.os.Process.myPid());
 		}
 	}

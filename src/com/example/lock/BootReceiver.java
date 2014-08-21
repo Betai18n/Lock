@@ -14,6 +14,7 @@ public class BootReceiver extends BroadcastReceiver {
 
             // context, AutoRun.class
             Intent newIntent = new Intent(context, LockStatusService.class);
+            
 
             /* MyActivity action defined in AndroidManifest.xml */
             newIntent.setAction("android.intent.action.MAIN");
@@ -30,6 +31,8 @@ public class BootReceiver extends BroadcastReceiver {
             /* if you want to start a service, follow below method */
             //context.startActivity(newIntent);
             context.startService(newIntent);
+            
+            
 
         }
     }
