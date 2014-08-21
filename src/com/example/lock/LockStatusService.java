@@ -24,7 +24,6 @@ public class LockStatusService extends Service{
     public TimeOffReceiver timeoffeceiver = new TimeOffReceiver();
     public TimeReceiver timereceiver = new TimeReceiver();
     
-    
     @Override
     public IBinder onBind(Intent intent) {
         // TODO Auto-generated method stub
@@ -80,13 +79,26 @@ public class LockStatusService extends Service{
     }
     
     public void PINchange(){
-    	
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
-        String date = sDateFormat.format(new java.util.Date());
+    	if(android.text.format.DateFormat.is24HourFormat(getBaseContext()))
+    	{
+    		SimpleDateFormat sDateFormat = new SimpleDateFormat("HHmm");
+            String date = sDateFormat.format(new java.util.Date());
 
-        StringBuffer mystring = new StringBuffer(date);
-        mystring.reverse();
-        passtimestring = mystring.toString();
+            StringBuffer mystring = new StringBuffer(date);
+            mystring.reverse();
+            passtimestring = mystring.toString();
+    	}
+    	else {
+    		SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
+            String date = sDateFormat.format(new java.util.Date());
+
+            StringBuffer mystring = new StringBuffer(date);
+            mystring.reverse();
+            passtimestring = mystring.toString();
+		}
+    	
+        //SimpleDateFormat sDateFormat = new SimpleDateFormat("hhmm");
+
         //passtimestring=date;
         
         policyManager.resetPassword(passtimestring,0);
