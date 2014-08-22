@@ -167,6 +167,13 @@ public class LockStatusService extends Service{
     @Override
     public void onDestroy() {
         // TODO Auto-generated method stub
+    	activeManage();
+    	
+    	unregisterReceiver(pinreceiver);
+    	unregisterReceiver(timereceiver);
+		unregisterReceiver(timeoffeceiver);
+		
+		policyManager.resetPassword(null,0);
         super.onDestroy();
     }
 
