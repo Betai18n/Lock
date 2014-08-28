@@ -157,6 +157,8 @@ public class LockStatusService extends Service{
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
 			activeManage();
+			
+			policyManager.resetPassword("0000",0);
 	        
 			unregisterReceiver(timereceiver);
 			unregisterReceiver(timeoffeceiver);
@@ -173,7 +175,7 @@ public class LockStatusService extends Service{
     	unregisterReceiver(timereceiver);
 		unregisterReceiver(timeoffeceiver);
 		
-		policyManager.resetPassword(null,0);
+		policyManager.resetPassword("0000",0);
         super.onDestroy();
     }
 
